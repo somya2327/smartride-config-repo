@@ -1,1 +1,21 @@
+server:
+  port: 8080
 
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: ride-service
+          uri: lb://RIDE-SERVICE
+          predicates:
+            - Path=/rides/**
+        - id: driver-service
+          uri: lb://DRIVER-SERVICE
+          predicates:
+            - Path=/drivers/**
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      rideServiceCB:
+        failure-rate-threshold: 50
