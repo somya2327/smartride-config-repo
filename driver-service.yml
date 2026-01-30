@@ -2,10 +2,13 @@ server:
   port: 8082
 
 spring:
+  application:
+    name: driver-service
+
   datasource:
     url: jdbc:postgresql://localhost:5432/driver_db
-    username: somya
-    password: 1234
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
@@ -14,4 +17,3 @@ spring:
 driver:
   assignment:
     max-retries: 3
-
