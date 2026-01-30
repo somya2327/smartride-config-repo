@@ -2,10 +2,13 @@ server:
   port: 8081
 
 spring:
+  application:
+    name: ride-service
+
   datasource:
     url: jdbc:postgresql://localhost:5432/ride_db
-    username: somya
-    password: 1234
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
     hibernate:
