@@ -2,6 +2,9 @@ server:
   port: 8080
 
 spring:
+  application:
+    name: api-gateway
+
   cloud:
     gateway:
       routes:
@@ -9,13 +12,28 @@ spring:
           uri: lb://RIDE-SERVICE
           predicates:
             - Path=/rides/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: rideServiceCB
+                fallbackUri: forward:/fallback/ride
+
         - id: driver-service
           uri: lb://DRIVER-SERVICE
           predicates:
             - Path=/drivers/**
+          filters:
+            - name: CircuitBreaker
+              args:
+                name: driverServiceCB
+                fallbackUri: forward:/fallback/driver
 
 resilience4j:
   circuitbreaker:
     instances:
       rideServiceCB:
         failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
+      driverServiceCB:
+        failure-rate-threshold: 50
+        wait-duration-in-open-state: 10s
