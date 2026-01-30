@@ -5,8 +5,9 @@ spring:
   application:
     name: auth-service
 
-jwt:
-  secret: ${JWT_SECRET}
-  expiration-ms: 900000
-  refresh-expiration-ms: 86400000
-  issuer: smartride-auth
+keycloak:
+  realm: smartride
+  auth-server-url: http://localhost:8080
+  resource: smartride-auth
+  credentials:
+    secret: ${KEYCLOAK_CLIENT_SECRET}
