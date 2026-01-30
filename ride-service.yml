@@ -12,9 +12,13 @@ spring:
 
   jpa:
     open-in-view: false
+    show-sql: false
     hibernate:
       ddl-auto: validate
-    show-sql: false
+    properties:
+      hibernate:
+        jdbc:
+          batch_size: 50
 
 kafka:
   topic:
