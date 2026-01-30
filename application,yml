@@ -19,6 +19,7 @@ spring:
     consumer:
       auto-offset-reset: earliest
       enable-auto-commit: false
+      isolation-level: read_committed
     producer:
       acks: all
       retries: 3
