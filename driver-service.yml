@@ -18,3 +18,4 @@ spring:
 driver:
   assignment:
     max-retries: 3
+    retry-delay-ms: 200
