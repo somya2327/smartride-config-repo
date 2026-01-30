@@ -1,7 +1,3 @@
-spring:
-  application:
-    name: common-config
-
 eureka:
   client:
     service-url:
