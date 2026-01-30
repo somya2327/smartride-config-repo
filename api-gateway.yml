@@ -8,48 +8,27 @@ spring:
   cloud:
     gateway:
       httpclient:
-        connect-timeout: 2000
-        response-timeout: 2s
+        connect-timeout: 3000
+        response-timeout: 3s
+
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
+
+        - name: CircuitBreaker
+          args:
+            name: defaultCB
+            fallbackUri: forward:/fallback/default
 
       routes:
         - id: ride-service
           uri: lb://RIDE-SERVICE
           predicates:
             - Path=/rides/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: rideServiceCB
-                fallbackUri: forward:/fallback/ride
 
         - id: driver-service
           uri: lb://DRIVER-SERVICE
           predicates:
             - Path=/drivers/**
-          filters:
-            - name: CircuitBreaker
-              args:
-                name: driverServiceCB
-                fallbackUri: forward:/fallback/driver
-
-resilience4j:
-  timelimiter:
-    instances:
-      rideServiceCB:
-        timeout-duration: 2s
-      driverServiceCB:
-        timeout-duration: 2s
-
-  circuitbreaker:
-    instances:
-      rideServiceCB:
-        sliding-window-size: 10
-        minimum-number-of-calls: 5
-        failure-rate-threshold: 50
-        wait-duration-in-open-state: 10s
-
-      driverServiceCB:
-        sliding-window-size: 10
-        minimum-number-of-calls: 5
-        failure-rate-threshold: 50
-        wait-duration-in-open-state: 10s
