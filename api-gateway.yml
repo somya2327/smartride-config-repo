@@ -5,6 +5,10 @@ spring:
   application:
     name: api-gateway
 
+  redis:
+    host: localhost
+    port: 6379
+
   cloud:
     gateway:
       httpclient:
@@ -32,3 +36,27 @@ spring:
           uri: lb://DRIVER-SERVICE
           predicates:
             - Path=/drivers/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
+resilience4j:
+  timelimiter:
+    instances:
+      defaultCB:
+        timeout-duration: 3s
+        cancel-running-future: true
+
+  circuitbreaker:
+    instances:
+      defaultCB:
+        sliding-window-type: COUNT_BASED
+        sliding-window-size: 20
+        minimum-number-of-calls: 10
+        failure-rate-threshold: 50
+        slow-call-rate-threshold: 50
+        slow-call-duration-threshold: 2s
+        permitted-number-of-calls-in-half-open-state: 5
+        wait-duration-in-open-state: 15s
