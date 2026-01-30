@@ -29,11 +29,23 @@ spring:
                 fallbackUri: forward:/fallback/driver
 
 resilience4j:
+  timelimiter:
+    instances:
+      rideServiceCB:
+        timeout-duration: 2s
+      driverServiceCB:
+        timeout-duration: 2s
+
   circuitbreaker:
     instances:
       rideServiceCB:
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
         failure-rate-threshold: 50
         wait-duration-in-open-state: 10s
+
       driverServiceCB:
+        sliding-window-size: 10
+        minimum-number-of-calls: 5
         failure-rate-threshold: 50
         wait-duration-in-open-state: 10s
