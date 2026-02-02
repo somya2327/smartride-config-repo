@@ -1,4 +1,3 @@
-
 server:
   port: 8080
 
@@ -6,9 +5,13 @@ spring:
   application:
     name: api-gateway
 
-  redis:
-    host: localhost
-    port: 6379
+  config:
+    import: optional:configserver:http://localhost:8888
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
   security:
     oauth2:
@@ -18,36 +21,39 @@ spring:
 
   cloud:
     gateway:
-      httpclient:
-        connect-timeout: 3000
-        response-timeout: 3s
+      server:
+        webflux:
 
-      default-filters:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 10
-            redis-rate-limiter.burstCapacity: 20
+          httpclient:
+            connect-timeout: 3000
+            response-timeout: 3s
 
-        - name: CircuitBreaker
-          args:
-            name: defaultCB
-            fallbackUri: forward:/fallback/default
+          default-filters:
+            - name: RequestRateLimiter
+              args:
+                redis-rate-limiter.replenishRate: 10
+                redis-rate-limiter.burstCapacity: 20
 
-      routes:
-        - id: auth-service
-          uri: lb://AUTH-SERVICE
-          predicates:
-            - Path=/api/auth/**
+            - name: CircuitBreaker
+              args:
+                name: defaultCB
+                fallbackUri: forward:/fallback/default
 
-        - id: ride-service
-          uri: lb://RIDE-SERVICE
-          predicates:
-            - Path=/rides/**
+          routes:
+            - id: auth-service
+              uri: lb://AUTH-SERVICE
+              predicates:
+                - Path=/api/auth/**
 
-        - id: driver-service
-          uri: lb://DRIVER-SERVICE
-          predicates:
-            - Path=/drivers/**
+            - id: ride-service
+              uri: lb://RIDE-SERVICE
+              predicates:
+                - Path=/rides/**
+
+            - id: driver-service
+              uri: lb://DRIVER-SERVICE
+              predicates:
+                - Path=/drivers/**
 
 eureka:
   client:
@@ -76,6 +82,10 @@ resilience4j:
         wait-duration-in-open-state: 15s
 
 management:
+  endpoint:
+    gateway:
+      enabled: true
+
   endpoints:
     web:
       exposure:
