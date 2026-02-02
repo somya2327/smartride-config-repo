@@ -9,13 +9,24 @@ spring:
     url: jdbc:postgresql://localhost:5432/driver_db
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
 
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: validate
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8086/realms/smartride
+
 driver:
   assignment:
     max-retries: 3
     retry-delay-ms: 200
+    lock-timeout-ms: 3000
