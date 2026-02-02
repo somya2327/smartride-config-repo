@@ -2,6 +2,8 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
 
 logging:
   level:
@@ -21,7 +23,9 @@ spring:
       auto-offset-reset: earliest
       enable-auto-commit: false
       isolation-level: read_committed
+      max-poll-records: 100
 
     producer:
       acks: all
       retries: 3
+      enable-idempotence: true
