@@ -33,6 +33,10 @@ spring:
             fallbackUri: forward:/fallback/default
 
       routes:
+         - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/auth/**
         - id: ride-service
           uri: lb://RIDE-SERVICE
           predicates:
