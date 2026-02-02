@@ -9,6 +9,11 @@ spring:
     gateway:
       enabled: true
 
+      discovery:
+        locator:
+          enabled: false
+          lower-case-service-id: true   # 🔥 THIS IS THE KEY FIX
+
       httpclient:
         connect-timeout: 3000
         response-timeout: 3s
@@ -20,34 +25,16 @@ spring:
             redis-rate-limiter.burstCapacity: 20
 
       routes:
-        # ============ AUTH SERVICE ============
         - id: auth-service
           uri: lb://auth-service
           predicates:
             - Path=/api/auth/**
-
-        # ============ RIDE SERVICE ============
-        - id: ride-service
-          uri: lb://ride-service
-          predicates:
-            - Path=/api/rides/**
-
-        # ============ DRIVER SERVICE ============
-        - id: driver-service
-          uri: lb://driver-service
-          predicates:
-            - Path=/api/drivers/**
 
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8089/realms/smartride
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
 
 eureka:
   client:
