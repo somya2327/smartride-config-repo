@@ -18,16 +18,16 @@ spring:
 
       routes:
         - id: auth-service
-          uri: lb://auth-service
+          uri: lb://AUTH-SERVICE
           predicates:
             - Path=/api/auth/**
 
         - id: ride-service
-          uri: lb://ride-service
+          uri: lb://RIDE-SERVICE
           predicates:
             - Path=/rides/**
 
         - id: driver-service
-          uri: lb://driver-service
+          uri: lb://DRIVER-SERVICE
           predicates:
             - Path=/drivers/**
