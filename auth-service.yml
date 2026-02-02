@@ -9,11 +9,11 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8086/realms/smartride
+          issuer-uri: http://localhost:8089/realms/smartride
 
 keycloak:
   realm: smartride
-  auth-server-url: http://localhost:8086
+  auth-server-url: http://localhost:8089
   resource: smartride-auth
   ssl-required: external
   credentials:
