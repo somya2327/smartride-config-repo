@@ -21,39 +21,37 @@ spring:
 
   cloud:
     gateway:
-      server:
-        webflux:
 
-          httpclient:
-            connect-timeout: 3000
-            response-timeout: 3s
+      httpclient:
+        connect-timeout: 3000
+        response-timeout: 3s
 
-          default-filters:
-            - name: RequestRateLimiter
-              args:
-                redis-rate-limiter.replenishRate: 10
-                redis-rate-limiter.burstCapacity: 20
+      default-filters:
+        - name: RequestRateLimiter
+          args:
+            redis-rate-limiter.replenishRate: 10
+            redis-rate-limiter.burstCapacity: 20
 
-            - name: CircuitBreaker
-              args:
-                name: defaultCB
-                fallbackUri: forward:/fallback/default
+        - name: CircuitBreaker
+          args:
+            name: defaultCB
+            fallbackUri: forward:/fallback/default
 
-          routes:
-            - id: auth-service
-              uri: lb://AUTH-SERVICE
-              predicates:
-                - Path=/api/auth/**
+      routes:
+        - id: auth-service
+          uri: lb://AUTH-SERVICE
+          predicates:
+            - Path=/api/auth/**
 
-            - id: ride-service
-              uri: lb://RIDE-SERVICE
-              predicates:
-                - Path=/rides/**
+        - id: ride-service
+          uri: lb://RIDE-SERVICE
+          predicates:
+            - Path=/rides/**
 
-            - id: driver-service
-              uri: lb://DRIVER-SERVICE
-              predicates:
-                - Path=/drivers/**
+        - id: driver-service
+          uri: lb://DRIVER-SERVICE
+          predicates:
+            - Path=/drivers/**
 
 eureka:
   client:
@@ -82,10 +80,6 @@ resilience4j:
         wait-duration-in-open-state: 15s
 
 management:
-  endpoint:
-    gateway:
-      enabled: true
-
   endpoints:
     web:
       exposure:
