@@ -1,33 +1,23 @@
 spring:
   cloud:
     gateway:
-      httpclient:
-        connect-timeout: 3000
-        response-timeout: 3s
-
-      default-filters:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 10
-            redis-rate-limiter.burstCapacity: 20
-
-        - name: CircuitBreaker
-          args:
-            name: defaultCB
-            fallbackUri: forward:/fallback/default
-
       routes:
         - id: auth-service
-          uri: lb://AUTH-SERVICE
+          uri: lb://auth-service
           predicates:
             - Path=/api/auth/**
 
         - id: ride-service
-          uri: lb://RIDE-SERVICE
+          uri: lb://ride-service
           predicates:
-            - Path=/rides/**
+            - Path=/api/rides/**
 
         - id: driver-service
-          uri: lb://DRIVER-SERVICE
+          uri: lb://driver-service
           predicates:
-            - Path=/drivers/**
+            - Path=/api/drivers/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
