@@ -9,20 +9,15 @@ spring:
     gateway:
       enabled: true
 
+      # 🔥 THIS LINE FIXES EVERYTHING
       discovery:
         locator:
-          enabled: false
-          lower-case-service-id: true   # 🔥 THIS IS THE KEY FIX
+          enabled: true
+          lower-case-service-id: true
 
       httpclient:
         connect-timeout: 3000
         response-timeout: 3s
-
-      default-filters:
-        - name: RequestRateLimiter
-          args:
-            redis-rate-limiter.replenishRate: 10
-            redis-rate-limiter.burstCapacity: 20
 
       routes:
         - id: auth-service
@@ -45,7 +40,6 @@ management:
   endpoint:
     gateway:
       enabled: true
-
   endpoints:
     web:
       exposure:
