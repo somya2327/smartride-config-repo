@@ -7,10 +7,7 @@ spring:
 
   cloud:
     gateway:
-
-      discovery:
-        locator:
-          enabled: false
+      enabled: true   # 🔴 REQUIRED (FOR ACTUATOR)
 
       httpclient:
         connect-timeout: 3000
@@ -53,3 +50,13 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
+
+management:
+  endpoint:
+    gateway:
+      enabled: true   # 🔴 THIS IS THE KEY FIX
+
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
