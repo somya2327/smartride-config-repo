@@ -7,7 +7,7 @@ spring:
 
   cloud:
     gateway:
-      enabled: true   # 🔴 REQUIRED (FOR ACTUATOR)
+      enabled: true
 
       httpclient:
         connect-timeout: 3000
@@ -20,18 +20,21 @@ spring:
             redis-rate-limiter.burstCapacity: 20
 
       routes:
+        # ================= AUTH SERVICE =================
         - id: auth-service
-          uri: lb://auth-service
+          uri: lb://AUTH-SERVICE
           predicates:
             - Path=/api/auth/**
 
+        # ================= RIDE SERVICE =================
         - id: ride-service
-          uri: lb://ride-service
+          uri: lb://RIDE-SERVICE
           predicates:
             - Path=/api/rides/**
 
+        # ================= DRIVER SERVICE =================
         - id: driver-service
-          uri: lb://driver-service
+          uri: lb://DRIVER-SERVICE
           predicates:
             - Path=/api/drivers/**
 
@@ -54,7 +57,7 @@ eureka:
 management:
   endpoint:
     gateway:
-      enabled: true   # 🔴 THIS IS THE KEY FIX
+      enabled: true
 
   endpoints:
     web:
