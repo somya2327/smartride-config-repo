@@ -1,14 +1,4 @@
-server:
-  port: 8080
-
 spring:
-  application:
-    name: api-gateway
-
-  redis:
-    host: localhost
-    port: 6379
-
   cloud:
     gateway:
       httpclient:
@@ -27,31 +17,17 @@ spring:
             fallbackUri: forward:/fallback/default
 
       routes:
+        - id: auth-service
+          uri: lb://auth-service
+          predicates:
+            - Path=/api/auth/**
+
         - id: ride-service
-          uri: lb://RIDE-SERVICE
+          uri: lb://ride-service
           predicates:
             - Path=/rides/**
 
         - id: driver-service
-          uri: lb://DRIVER-SERVICE
+          uri: lb://driver-service
           predicates:
             - Path=/drivers/**
-
-resilience4j:
-  timelimiter:
-    instances:
-      defaultCB:
-        timeout-duration: 3s
-        cancel-running-future: true
-
-  circuitbreaker:
-    instances:
-      defaultCB:
-        sliding-window-type: COUNT_BASED
-        sliding-window-size: 20
-        minimum-number-of-calls: 10
-        failure-rate-threshold: 50
-        slow-call-rate-threshold: 50
-        slow-call-duration-threshold: 2s
-        permitted-number-of-calls-in-half-open-state: 5
-        wait-duration-in-open-state: 15s
