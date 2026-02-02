@@ -73,3 +73,9 @@ resilience4j:
         slow-call-duration-threshold: 2s
         permitted-number-of-calls-in-half-open-state: 5
         wait-duration-in-open-state: 15s
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
