@@ -5,22 +5,12 @@ spring:
   application:
     name: api-gateway
 
-  config:
-    import: optional:configserver:http://localhost:8888
-
-  data:
-    redis:
-      host: localhost
-      port: 6379
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8089/realms/smartride
-
   cloud:
     gateway:
+
+      discovery:
+        locator:
+          enabled: false
 
       httpclient:
         connect-timeout: 3000
@@ -32,55 +22,34 @@ spring:
             redis-rate-limiter.replenishRate: 10
             redis-rate-limiter.burstCapacity: 20
 
-        - name: CircuitBreaker
-          args:
-            name: defaultCB
-            fallbackUri: forward:/fallback/default
-
       routes:
         - id: auth-service
-          uri: lb://AUTH-SERVICE
+          uri: lb://auth-service
           predicates:
             - Path=/api/auth/**
 
         - id: ride-service
-          uri: lb://RIDE-SERVICE
+          uri: lb://ride-service
           predicates:
-            - Path=/rides/**
+            - Path=/api/rides/**
 
         - id: driver-service
-          uri: lb://DRIVER-SERVICE
+          uri: lb://driver-service
           predicates:
-            - Path=/drivers/**
+            - Path=/api/drivers/**
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8089/realms/smartride
+
+  data:
+    redis:
+      host: localhost
+      port: 6379
 
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-  instance:
-    prefer-ip-address: true
-
-resilience4j:
-  timelimiter:
-    instances:
-      defaultCB:
-        timeout-duration: 3s
-        cancel-running-future: true
-
-  circuitbreaker:
-    instances:
-      defaultCB:
-        sliding-window-type: COUNT_BASED
-        sliding-window-size: 20
-        minimum-number-of-calls: 10
-        failure-rate-threshold: 50
-        slow-call-rate-threshold: 50
-        slow-call-duration-threshold: 2s
-        permitted-number-of-calls-in-half-open-state: 5
-        wait-duration-in-open-state: 15s
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,gateway
