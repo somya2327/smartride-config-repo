@@ -37,6 +37,11 @@ spring:
           predicates:
             - Path=/drivers/**
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
 resilience4j:
   timelimiter:
     instances:
@@ -55,18 +60,3 @@ resilience4j:
         slow-call-duration-threshold: 2s
         permitted-number-of-calls-in-half-open-state: 5
         wait-duration-in-open-state: 15s
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-
-logging:
-  level:
-    root: INFO
-
-management:
-  endpoints:
-    web:
-      exposure:
-        include: health,info,metrics,prometheus
