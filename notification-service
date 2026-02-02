@@ -8,7 +8,17 @@ spring:
   kafka:
     consumer:
       group-id: notification-service-group
+      max-poll-interval-ms: 300000
+      max-poll-records: 50
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8086/realms/smartride
 
 kafka:
   topic:
     notifications: notification.events
+  consumer:
+    retry-attempts: 3
