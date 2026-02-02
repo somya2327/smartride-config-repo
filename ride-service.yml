@@ -9,6 +9,10 @@ spring:
     url: jdbc:postgresql://localhost:5432/ride_db
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 10
+      minimum-idle: 2
+      connection-timeout: 30000
 
   jpa:
     open-in-view: false
@@ -19,6 +23,18 @@ spring:
       hibernate:
         jdbc:
           batch_size: 50
+        order_inserts: true
+        order_updates: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8086/realms/smartride
+
+  kafka:
+    producer:
+      enable-idempotence: true
 
 kafka:
   topic:
