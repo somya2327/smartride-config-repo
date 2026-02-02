@@ -20,21 +20,21 @@ spring:
             redis-rate-limiter.burstCapacity: 20
 
       routes:
-        # ================= AUTH SERVICE =================
+        # ============ AUTH SERVICE ============
         - id: auth-service
-          uri: lb://AUTH-SERVICE
+          uri: lb://auth-service
           predicates:
             - Path=/api/auth/**
 
-        # ================= RIDE SERVICE =================
+        # ============ RIDE SERVICE ============
         - id: ride-service
-          uri: lb://RIDE-SERVICE
+          uri: lb://ride-service
           predicates:
             - Path=/api/rides/**
 
-        # ================= DRIVER SERVICE =================
+        # ============ DRIVER SERVICE ============
         - id: driver-service
-          uri: lb://DRIVER-SERVICE
+          uri: lb://driver-service
           predicates:
             - Path=/api/drivers/**
 
