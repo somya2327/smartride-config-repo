@@ -19,6 +19,6 @@ spring:
 
 kafka:
   topic:
-    notifications: notification.events
+    notifications: notification.events.v1
   consumer:
     retry-attempts: 3
