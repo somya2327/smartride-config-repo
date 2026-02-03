@@ -25,10 +25,6 @@ spring:
         jwt:
           issuer-uri: http://localhost:8089/realms/smartride
 
-  kafka:
-    consumer:
-      group-id: driver-service-group
-
 driver:
   assignment:
     max-retries: 3
