@@ -1,30 +1,15 @@
 server:
-  port: 8081
+  port: 8083
 
 spring:
   application:
-    name: ride-service
+    name: notification-service
 
-  datasource:
-    url: jdbc:postgresql://localhost:5432/ride_db
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
-    hikari:
-      maximum-pool-size: 10
-      minimum-idle: 2
-      connection-timeout: 30000
-
-  jpa:
-    open-in-view: false
-    show-sql: false
-    hibernate:
-      ddl-auto: update
-    properties:
-      hibernate:
-        jdbc:
-          batch_size: 50
-        order_inserts: true
-        order_updates: true
+  kafka:
+    consumer:
+      group-id: notification-service-group
+      max-poll-interval-ms: 300000
+      max-poll-records: 50
 
   security:
     oauth2:
@@ -32,10 +17,8 @@ spring:
         jwt:
           issuer-uri: http://localhost:8089/realms/smartride
 
-  kafka:
-    producer:
-      enable-idempotence: true
-
 kafka:
   topic:
-    ride-events: ride.lifecycle.events
+    notifications: notification.events
+  consumer:
+    retry-attempts: 3
