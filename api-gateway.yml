@@ -45,6 +45,11 @@ spring:
         jwt:
           issuer-uri: http://localhost:8089/realms/smartride
 
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+
 management:
   endpoint:
     gateway:
