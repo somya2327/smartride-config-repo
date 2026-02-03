@@ -9,7 +9,6 @@ spring:
     gateway:
       enabled: true
 
-      # 🔥 THIS LINE FIXES EVERYTHING
       discovery:
         locator:
           enabled: true
@@ -25,16 +24,26 @@ spring:
           predicates:
             - Path=/api/auth/**
 
+        - id: ride-service
+          uri: lb://ride-service
+          predicates:
+            - Path=/api/rides/**
+
+        - id: driver-service
+          uri: lb://driver-service
+          predicates:
+            - Path=/api/drivers/**
+
+        - id: notification-service
+          uri: lb://notification-service
+          predicates:
+            - Path=/api/notifications/**
+
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8089/realms/smartride
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
 
 management:
   endpoint:
