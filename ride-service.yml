@@ -38,4 +38,4 @@ spring:
 
 kafka:
   topic:
-    ride-events: ride.lifecycle.events
+    ride-events: ride.events.v1
