@@ -12,8 +12,6 @@ spring:
           issuer-uri: http://localhost:8089/realms/smartride
 
   kafka:
-    consumer:
-      group-id: safety-fraud-group
     producer:
       enable-idempotence: true
 
@@ -30,4 +28,4 @@ redis:
 
 kafka:
   topic:
-    fraud-events: fraud.events.v1
+    fraud-events: fraud.detected.events
