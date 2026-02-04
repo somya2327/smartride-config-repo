@@ -6,14 +6,19 @@ spring:
     name: driver-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/driver_db
+    url: jdbc:postgresql://localhost:5432/smartride_driver
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
   jpa:
     open-in-view: false
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
 
   security:
     oauth2:
@@ -22,11 +27,41 @@ spring:
           issuer-uri: http://localhost:8089/realms/smartride
 
   kafka:
+    bootstrap-servers: localhost:9092
+
     consumer:
       group-id: driver-service-group
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: com.smartride.*
 
-driver:
-  assignment:
-    max-retries: 3
-    retry-delay-ms: 200
-    lock-timeout-ms: 3000
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        enable.idempotence: true
+        acks: all
+        retries: 3
+
+kafka:
+  topics:
+    ride-created: ride.events.v1
+    driver-events: driver.events.v1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
