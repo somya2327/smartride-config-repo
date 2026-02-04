@@ -6,7 +6,7 @@ spring:
     name: driver-service
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/smartride_driver
+    url: jdbc:postgresql://localhost:5432/driver_db
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.postgresql.Driver
