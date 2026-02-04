@@ -4,13 +4,7 @@ server:
 spring:
   application:
     name: auth-service
-
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8089/realms/smartride
-
+    
 keycloak:
   realm: smartride
   auth-server-url: http://localhost:8089
