@@ -4,11 +4,15 @@ server:
 spring:
   application:
     name: auth-service
-    
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8089/realms/smartride   # resource server for admin api 
+
 keycloak:
+  server-url: http://localhost:8089
   realm: smartride
-  auth-server-url: http://localhost:8089
-  resource: smartride-auth
-  ssl-required: external
-  credentials:
-    secret: ${KEYCLOAK_CLIENT_SECRET}
+  client-id: smartride-auth
+  client-secret: ${KEYCLOAK_CLIENT_SECRET}
