@@ -40,7 +40,7 @@ spring:
     consumer:
       group-id: driver-service-group
       auto-offset-reset: earliest
-      enable-auto-commit:false
+      enable-auto-commit: false
 
 kafka:
   topics:
