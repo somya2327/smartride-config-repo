@@ -48,6 +48,7 @@ kafka:
   topics:
     ride-events: ride.events.v1
     driver-events: driver.events.v1
+    ride-assigned: ride.assigned.events.v1
 
 eureka:
   client:
