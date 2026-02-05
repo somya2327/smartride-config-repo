@@ -29,14 +29,6 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
 
-    consumer:
-      group-id: driver-service-group
-      auto-offset-reset: earliest
-      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
-      properties:
-        spring.json.trusted.packages: com.smartride.*
-
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
@@ -44,10 +36,14 @@ spring:
         enable.idempotence: true
         acks: all
         retries: 3
+        
+    consumer:
+      group-id: driver-service-group
+      auto-offset-reset: earliest
+      enable-auto-commit:false
 
 kafka:
   topics:
-    ride-created: ride.events.v1
     driver-events: driver.events.v1
 
 eureka:
