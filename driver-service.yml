@@ -52,7 +52,6 @@ kafka:
     ride-created: ride.created.events.v1
     driver-ride-accepted: driver.ride.accepted.events.v1
     driver-status-changed: driver.status.changed.events.v1
-    ride-status-changed: ride.status.changed.events.v1
     
 eureka:
   client:
