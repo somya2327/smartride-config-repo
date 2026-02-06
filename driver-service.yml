@@ -30,13 +30,15 @@ spring:
     bootstrap-servers: localhost:9092
 
     consumer:
-      group-id: driver-service-group
+      group-id: driver-service-group-v2
       auto-offset-reset: earliest
       enable-auto-commit: false
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       properties:
-        spring.json.trusted.packages: com.smartride.*
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.use.type.headers: false
+        spring.json.trusted.packages: com.smartride.events
 
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
