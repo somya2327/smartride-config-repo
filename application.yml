@@ -1,11 +1,13 @@
-spring:
-  kafka:
-    bootstrap-servers: localhost:9092
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
 
-    producer:
-      acks: all
-      retries: 3
-      enable-idempotence: true
+logging:
+  level:
+    root: INFO
 
 management:
   endpoints:
@@ -13,13 +15,17 @@ management:
       exposure:
         include: health,info,metrics,prometheus
 
-logging:
-  level:
-    root: INFO
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
 
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
-  instance:
-    prefer-ip-address: true
+    consumer:
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      isolation-level: read_committed
+      max-poll-records: 100
+
+    producer:
+      acks: all
+      retries: 3
+      enable-idempotence: true
