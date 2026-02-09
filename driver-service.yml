@@ -31,8 +31,9 @@ spring:
 
     consumer:
       group-id: driver-service-group-v2
-      auto-offset-reset: earliest
+      auto-offset-reset: latest
       enable-auto-commit: false
+      isolation-level: read_committed
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
       properties:
@@ -50,13 +51,13 @@ spring:
 kafka:
   topics:
     ride-created: ride.created.events.v1
+    ride-offer: ride.offer.events.v1
     driver-ride-accepted: driver.ride.accepted.events.v1
+    driver-ride-rejected: driver.ride.rejected.events.v1
     driver-status-changed: driver.status.changed.events.v1
     ride-status-changed: ride.status.changed.events.v1
-    ride-offer: ride.offer.events.v1
-    ride-rejected: driver.ride.rejected.events.v1
     ride-assigned: ride.assigned.events.v1
-    
+
 eureka:
   client:
     service-url:
