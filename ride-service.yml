@@ -53,6 +53,7 @@ kafka:
     ride-status-changed: ride.status.changed.events.v1
     ride-offer: ride.offer.events.v1
     driver-ride-rejected: driver.ride.rejected.events.v1
+    driver-location-updated: driver.location.updated.events.v1
 
 eureka:
   client:
