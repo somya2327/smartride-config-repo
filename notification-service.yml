@@ -2,9 +2,6 @@ server:
   port: 8083
 
 spring:
-  application:
-    name: notification-service
-
   datasource:
     url: jdbc:postgresql://localhost:5432/notification_db
     username: ${DB_USERNAME}
@@ -22,7 +19,6 @@ spring:
 
   kafka:
     bootstrap-servers: localhost:9092
-
     consumer:
       group-id: notification-service-group-v1
       auto-offset-reset: earliest
@@ -33,6 +29,27 @@ spring:
         spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
         spring.json.trusted.packages: com.smartride.events
         spring.json.use.type.headers: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8089/realms/smartride
+
+kafka:
+  topics:
+    ride-created: ride.created.events.v1
+    ride-assigned: ride.assigned.events.v1
+    ride-started: ride.started.events.v1
+    ride-completed: ride.completed.events.v1
+    ride-status-changed: ride.status.changed.events.v1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    prefer-ip-address: true
 
 management:
   endpoints:
