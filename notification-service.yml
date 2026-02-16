@@ -24,8 +24,8 @@ spring:
     bootstrap-servers: localhost:9092
 
     consumer:
-      group-id: notification-service-group-v2   # 🔥 changed to skip old corrupted messages
-      auto-offset-reset: latest                 # 🔥 do NOT read old broken records
+      group-id: notification-service-group-v2
+      auto-offset-reset: latest
       enable-auto-commit: false
 
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
@@ -35,8 +35,6 @@ spring:
         spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
         spring.json.trusted.packages: com.smartride.events
         spring.json.use.type.headers: true
-        spring.json.value.default.type: com.smartride.events.BaseEvent
-        spring.json.remove.type.headers: false
 
   security:
     oauth2:
