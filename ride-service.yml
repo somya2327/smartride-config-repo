@@ -43,6 +43,7 @@ spring:
       properties:
         enable.idempotence: true
         acks: all
+        spring.json.write.dates.as.timestamps: false
 
 kafka:
   topics:
