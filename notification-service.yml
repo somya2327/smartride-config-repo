@@ -5,20 +5,37 @@ spring:
   application:
     name: notification-service
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/notification_db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
   kafka:
+    bootstrap-servers: localhost:9092
+
     consumer:
-      group-id: notification-service-group
-      max-poll-interval-ms: 300000
-      max-poll-records: 50
+      group-id: notification-service-group-v1
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: com.smartride.events
+        spring.json.use.type.headers: true
 
-  security:
-    oauth2:
-      resourceserver:
-        jwt:
-          issuer-uri: http://localhost:8089/realms/smartride
-
-kafka:
-  topic:
-    notifications: notification.events.v1
-  consumer:
-    retry-attempts: 3
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
