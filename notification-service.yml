@@ -5,20 +5,58 @@ spring:
   application:
     name: notification-service
 
-  kafka:
-    consumer:
-      group-id: notification-service-group
-      max-poll-interval-ms: 300000
-      max-poll-records: 50
-
   security:
     oauth2:
       resourceserver:
         jwt:
           issuer-uri: http://localhost:8089/realms/smartride
 
+  kafka:
+    bootstrap-servers: localhost:9092
+
+    consumer:
+      group-id: notification-service-group-v1
+      auto-offset-reset: earliest
+      enable-auto-commit: false
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: com.smartride.events
+        spring.json.use.type.headers: false
+
+    listener:
+      ack-mode: manual
+      concurrency: 2
+
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        enable.idempotence: true
+        acks: all
+        retries: 3
+
 kafka:
-  topic:
-    notifications: notification.events.v1
-  consumer:
-    retry-attempts: 3 
+  topics:
+    ride-offer: ride.offer.events.v1
+    ride-assigned: ride.assigned.events.v1
+    ride-started: ride.started.events.v1
+    ride-completed: ride.completed.events.v1
+    ride-status-changed: ride.status.changed.events.v1
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true
+
+  instance:
+    prefer-ip-address: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
