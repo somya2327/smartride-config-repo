@@ -58,7 +58,8 @@ kafka:
     ride-started: ride.started.events.v1
     ride-completed: ride.completed.events.v1
     ride-status-changed: ride.status.changed.events.v1
-
+    notification-dlt: notification.deadletter.events.v1
+    
 eureka:
   client:
     service-url:
