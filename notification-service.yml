@@ -4,7 +4,22 @@ server:
 spring:
   application:
     name: notification-service
+  
+  datasource:
+    url: jdbc:postgresql://localhost:5432/notification_db
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
 
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+        
   security:
     oauth2:
       resourceserver:
@@ -18,6 +33,8 @@ spring:
       group-id: notification-service-group-v2   
       auto-offset-reset: latest                
       enable-auto-commit: false
+      isolation-level: read_committed
+      max-poll-records: 50
 
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
