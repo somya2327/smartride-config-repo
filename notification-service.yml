@@ -30,18 +30,21 @@ spring:
     bootstrap-servers: localhost:9092
 
     consumer:
-      group-id: notification-service-group-v3
+      group-id: notification-service-group-v4   # NEW GROUP
       auto-offset-reset: latest
       enable-auto-commit: false
       isolation-level: read_committed
       max-poll-records: 50
 
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
-      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
 
       properties:
-        spring.json.trusted.packages: "com.smartride.events"
-        spring.json.use.type.headers: false
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        spring.json.trusted.packages: com.smartride.events
+        spring.json.use.type.headers: true
+        spring.json.remove.type.headers: false
+        spring.json.value.default.type: com.smartride.events.BaseEvent
 
     listener:
       concurrency: 1
