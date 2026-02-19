@@ -29,6 +29,14 @@ spring:
   kafka:
     bootstrap-servers: localhost:9092
 
+    # ✅ PRODUCER (FIX FOR DLT)
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+      properties:
+        spring.json.add.type.headers: true
+
+    # ✅ CONSUMER
     consumer:
       group-id: notification-service-group-v2   
       auto-offset-reset: latest                
@@ -47,7 +55,7 @@ spring:
         spring.json.value.default.type: com.smartride.events.BaseEvent
 
     listener:
-      ack-mode: record     
+      ack-mode: record
       concurrency: 1
 
 kafka:
