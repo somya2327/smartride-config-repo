@@ -30,8 +30,8 @@ spring:
     bootstrap-servers: localhost:9092
 
     consumer:
-      group-id: notification-service-group-v7   # NEW GROUP
-      auto-offset-reset: latest
+      group-id: notification-service-group-v2   
+      auto-offset-reset: latest                
       enable-auto-commit: false
       isolation-level: read_committed
       max-poll-records: 50
@@ -48,7 +48,6 @@ spring:
 
     listener:
       concurrency: 1
-      ack-mode: manual
 
 kafka:
   topics:
@@ -58,8 +57,7 @@ kafka:
     ride-started: ride.started.events.v1
     ride-completed: ride.completed.events.v1
     ride-status-changed: ride.status.changed.events.v1
-    notification-dlt: notification.deadletter.events.v1
-    
+
 eureka:
   client:
     service-url:
