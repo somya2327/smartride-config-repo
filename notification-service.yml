@@ -47,6 +47,7 @@ spring:
         spring.json.value.default.type: com.smartride.events.BaseEvent
 
     listener:
+      ack-mode: manual      # ✅ ADD THIS LINE
       concurrency: 1
 
 kafka:
