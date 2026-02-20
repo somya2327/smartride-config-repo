@@ -63,6 +63,16 @@ feign:
       default:
         connectTimeout: 3000   # 3 seconds to connect
         readTimeout: 3000      # 3 seconds to wait for response
+        
+resilience4j:
+  circuitbreaker:
+    instances:
+      authService:
+        slidingWindowSize: 5
+        minimumNumberOfCalls: 3
+        failureRateThreshold: 50
+        waitDurationInOpenState: 10s
+        permittedNumberOfCallsInHalfOpenState: 2
 
 kafka:
   topics:
