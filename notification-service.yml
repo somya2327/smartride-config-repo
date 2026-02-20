@@ -57,6 +57,12 @@ spring:
     listener:
       ack-mode: record
       concurrency: 1
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 3000   # 3 seconds to connect
+        readTimeout: 3000      # 3 seconds to wait for response
 
 kafka:
   topics:
